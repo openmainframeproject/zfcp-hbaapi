@@ -1,0 +1,97 @@
+#
+# Copyright IBM Corp. 2008, 2018
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Common Public License v1.0
+# which accompanies this distribution, and is available at
+# http://www.ibm.com/developerworks/library/os-cpl.html
+#
+# Authors:		Andreas Herrmann
+#			Sven Schuetz <sven@de.ibm.com>
+#
+# File:			configure.in
+#
+# Description:
+# Input file for autoconf
+#
+#
+
+AC_INIT(vlib.c)
+AM_INIT_AUTOMAKE(lib-zfcp-hbaapi,2.2.0)
+
+AC_PROG_CC
+
+AM_CONFIG_HEADER(config.h)
+AC_PROG_LIBTOOL
+
+AC_PROG_INSTALL
+AC_LANG_C
+AC_PROG_MAKE_SET
+AC_C_BIGENDIAN
+
+AC_HEADER_STDC
+
+AC_ARG_ENABLE([backtrace],
+	[AC_HELP_STRING([--enable-backtrace],[enable backtrace printing on mutex
+		errors])],
+	[ if test "$enableval" = "yes"; then
+		echo "enabling mutex backtraces";
+	  fi ],,)
+
+AC_ARG_ENABLE([vendor-lib],
+	[AC_HELP_STRING([--enable-vendor-lib],[build as vendor library
+		(default: disabled)])],
+	[ if  test "$enableval" == "yes"; then
+		echo "building as vendor lib";
+	  fi
+	],[enable_vendor_lib=no])
+
+AC_ARG_ENABLE([debug],
+	[AC_HELP_STRING([--enable-debug],[compile with debug information
+		(default: disabled)])],
+	[ if test "$enableval" == "yes"; then
+	  	echo "enabling debug code";
+	  fi
+	],[enable_debug=no])
+
+AC_ARG_ENABLE([docs],
+        [AC_HELP_STRING([--enable-docs], [Enable generation of API documentation
+		(default: enabled)])],
+        [ if test "$enableval" == "yes"; then
+                echo "enabling doxygen developer documentation";
+	  fi
+	],[enable_docs=yes])
+
+
+
+AM_CONDITIONAL(DEBUG, test "$enable_debug" = yes)
+AM_CONDITIONAL(BACKTRACE, test "$enable_backtrace" = yes)
+AM_CONDITIONAL(VENDORLIB, test "$enable_vendor_lib" = yes)
+AM_CONDITIONAL(DOCS, test "$enable_docs" = yes)
+
+if test "$enable_vendor_lib" = yes; then
+	AC_DEFINE(HBAAPI_VENDOR_LIB, 1,	[build as vendor library])
+fi
+if test "$enable_backtrace" = yes; then
+	AC_DEFINE(HBAAPI_BACKTRACE, 1,
+	[enable backtrace printing on mutex errors])
+fi
+
+# Check for doxygen for generating documentation
+if test "$enable_docs" = "yes"; then
+   AC_CHECK_PROG(DOXYGEN,doxygen,[doxygen])
+   if test -z "${DOXYGEN}"
+   then
+      AC_MSG_WARN([doxygen is required to build API documentation.])
+   fi
+fi
+
+# Check if libsgutils version one or two is available
+LIBSGUTILS=none
+AC_CHECK_LIB(sgutils, sg_ll_report_luns, LIBSGUTILS=sgutils)
+AC_CHECK_LIB(sgutils2, sg_ll_report_luns, LIBSGUTILS=sgutils2)
+if test "$LIBSGUTILS" = none; then
+	AC_MSG_ERROR([No libsgutils found.])
+fi
+AC_SUBST(LIBSGUTILS)
+
+AC_OUTPUT(Makefile)

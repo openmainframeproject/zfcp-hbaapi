@@ -1,0 +1,104 @@
+.\"  Copyright IBM Corp. 2010
+.TH zfcp_show 8 "Jan 2010" "zfcp_hbaapi-2"
+.SH NAME
+zfcp_show \- show information about the SAN environment.
+
+.SH SYNOPSIS
+.B zfcp_show
+.RB [ \-oOtnvcdh ]
+.RB [ \-a
+.IR <busid|fc_host|S_ID|WWPN> ]
+.RB [ \-i
+.IR <domain-ID> ]
+.RB [ \-p
+.IR <attached-port> ]
+
+.SH DESCRIPTION
+.PP
+.B zfcp_show
+is primarily used to get an overview of the connected storage area network. 
+Depending on the provided command line switches the information includes
+participating interconnect element names, their type (e.g. switch, bridge, hub) the amount
+of available ports, their status and the potentially connected node ports along with their
+port name (WWPN) and node port ID. In addition the topology of the SAN can be displayed by
+providing the interconnect element ports which are used to link between the switches.
+The provided information can become very huge, therefore a variety of switches are provided to
+limit the output to the data of interest. 
+
+.SH OPTIONS
+.TP
+.B -a <adapter>
+source adapter specified by busid, fc_host, S_ID or WWPN.
+.TP
+.B -i <ID>
+show only information about domain <ID>.
+.TP
+.B -p <port>
+show only information about attached port <port>.
+.TP
+.B -o
+show online ports only.
+.TP
+.B -O
+show offline ports only.
+.TP
+.B -t
+show topology information only.
+.TP
+.B -n
+show local name server information only.
+.TP
+.B -c
+provide the information as CSV output.
+.TP
+.B -v
+Generate verbose output.
+.TP
+.B -d
+provide some debug output.
+.TP
+.B -h
+Print help message and exit.
+
+
+.SH EXAMPLES
+.PP
+.IP "zfcp_show -t"
+Only show the topology information. The output is a brief listing describing
+how the various switches, bridges etc are connected to each other to form
+the storage area network (SAN).
+
+.PP
+.IP "zfcp_show -a 0.0.3c02"
+Provide the standard information but use the adapter with the busid 0.0.3c02
+to send the request.
+
+.PP
+.IP "zfcp_show -a host0"
+Provide the standard information but use the adapter with the fc_host host0
+to send the request.
+
+.PP
+.IP "zfcp_show -a 0x656000"
+Provide the standard information but use the adapter with the S_ID h0x656000
+to send the request.
+
+.PP
+.IP "zfcp_show -a 0x500507630300c562"
+Provide the standard information but use the adapter with the WWPN 0x500507630300c562
+to send the request.
+
+.PP
+.IP "zfcp_show -d"
+This command line switch is only to be used in case the raw requests and responses
+send and received from the management server are required.
+
+.PP
+.IP "zfcp_show -n"
+The local name server (directory server) query can be used to receive basic information
+about the attached SAN when no management server access is available.
+The output shows all ports of the local zone with their corresponding WWPN, D_ID (destiantion ID),
+the port type and, if available, the supported protocols.
+
+
+

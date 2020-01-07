@@ -1,0 +1,84 @@
+2018-04-26  Jens Remus <jremus@linux.ibm.com>
+
+	* Version 2.2.0 contains additional port speed capabilities:
+
+	* add port speed capabilities defined in FC-GS-7 draft revision 10.8
+	from July 17, 2016: HBA_PORTSPEED_32GBIT, HBA_PORTSPEED_64GBIT,
+	HBA_PORTSPEED_128GBIT, and HBA_PORTSPEED_256GBIT
+
+2013-11-28  Steffen Maier <maier@linux.vnet.ibm.com>
+
+	* Version 2.1.1 contains bugfixes and minor adaptations to build
+	in recent Linux environments:
+
+	* drop duplicate -lpthread from zfcphbaapi LDFLAGS
+
+	* fix generation of hbaapi.h.3 man page for parallel builds
+
+	* fix linking of zfcp_{ping,show} tools if building as vendorlib
+
+	* fix duplicate man page references for recent automake versions
+
+	* fix CFLAGS override to enable passing from outside
+
+	* update bootstrap to proper shell script and point to alternatives
+
+2010-06-12 Swen Schillig <swen@vnet.ibm.com>
+
+	Added two utilities (zfcp_ping, zfcp_show) to ease the discovery
+	of a storage area network.
+	Updated Version to 2.1
+
+2010-03-17  Sven Schuetz <sven@de.ibm.com>
+
+	Added support for event triggers (kernel 2.6.36 required).
+	Minor enhancements and bugfixes.
+
+2008-08-04 Sven Schuetz <sven@de.ibm.com>
+
+	* All files:
+	Redesigned the entire Package, does not use ioctls anymore but
+	sysfs and libsgutils.
+	Updated Version to number 2.
+
+2005-10-07    Andreas Herrman
+
+	* updated package version (1.3), updated library version (0:3:0)
+
+	* added SAN discovery tool san_disc as an example program which uses
+	libzfcphbaapi
+
+	* minor changes of doxygen documentation
+
+	* removed HBA_STATUS_MORE_DATA from ReportLUNs (not returned anyway)
+
+	* install man pages for libzfcphbaapi, hbaapi.h, suported/unsupported
+	APIs 
+
+	* added man page for libzfcphbaapi, supported/unsupported and APIs
+
+2005-03-11    Andreas Herrman
+
+	* minor changes of doxygen documentation
+
+	* added support for HBA_SendRPS and HBA_SendRLS
+
+2004-05-19    Andreas Herrman
+
+	* added environment variable LIB_ZFCP_HBAAPI_DEVICE to set the
+	device file name of the zfcp_hbaapi device
+
+2004-05-14    Andreas Herrman
+
+	* new package version (1.2), new library version (0:2:0)
+
+	* removed possible dead log when HBA_FreeLibrary is called
+
+2004-03-24    Andreas Herrman
+
+	* new package version (1.1), new library version (0:1:0)
+
+	* adaptation to changed IO controls for INQUIRY, READ CAPACITY,
+	REPORT LUNS (ZH_SCSI_SENSE_BUFFER_SIZE was introduced to avoid
+	dependency to SCSI_SENSE_BUFFERSIZE used in the kernel)
+

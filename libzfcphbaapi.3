@@ -1,0 +1,100 @@
+.\"  (C) Copyright IBM Corp. 2005, 2008
+'\"! tbl | mmdoc 
+'\"macro stdmacro 
+.nr X
+.TH libzfcphbaapi 3 "2008" "ZFCP HBA API"
+.SH NAME
+libzfcphbaapi \- an implementation of FC-HBA
+
+.SH SYNOPSIS
+.B #include <hbaapi.h>
+.PP
+cc file.c -lHBAAPI
+
+When linking to the SNIA HBA API wrapper package (default)
+
+or
+
+cc file.c -lzfcphbaapi
+
+.SH DESCRIPTION
+
+.SH Introduction
+
+The
+.I libzfcphbaapi
+is part of an implementation of FC-HBA for the ZFCP
+device driver. The ZFCP device driver is a FCP device driver for Linux
+on System z. The whole implementation of FC-HBA for the ZFCP device driver
+is called ZFCP HBA API. It is implemented in libzfcphbaapi - a shared library
+which provides the API defined in FC-HBA.
+
+
+.SH Compatibility
+
+ZFCP HBA API Library supports the API functions listed in
+.IR SupportedHBAAPIs(3)
+All other API functions of FC-HBA return
+the status HBA_STATUS_ERROR_NOT_SUPPORTED if possible and are listed in
+.IR UnSupportedHBAAPIs(3) 
+
+
+.SH Restrictions and Peculiarities
+
+For ZFCP HBA API the following restrictions and pecularities apply:
+.PP
+- Only adapters, ports and units can be accessed that are configured in
+the ZFCP device dirver. This is due to internal restrictions of
+the ZFCP device driver and due to the fact that the adapter might be
+shared between several VM guests.
+.PP
+- If SCSI commands are send to a target port, the well known lun (WLUN) for the
+report luns command will be attached and detached. If the storage server does
+not support that WLUN, lun scanning will fail.
+.PP
+- The function HBA_GetFcpTargetMapping() does not return an OSDeviceName
+in struct HBA_FCPTargetMapping. This is conform to FC-HBA since this
+field is optional.
+.PP
+- Because the ZFCP device driver does not support Single Byte Command
+Code Sets Connections, the functions HBA_GetSBTargetMapping(),
+HBA_GetSBStatistics() and HBA_SBDskGetCapacity() are not supported
+by libzfcphbaapi.
+
+
+.SH Installation
+
+A source RPM and/or binary RPM "lib-zfcp-hbaapi" should be provided which
+will install the ZFCP HBA API Library called libzfcphbaapi.so. The
+corresponding header file hbaapi.h will be supplied by the SNIA HBA API
+library wrapper package when compiled as a vendor library. When not, an own
+version of the header file will be installed.
+
+
+.SH Environment Variables
+
+To log error situations in libzfcphbaapi two environment variables
+are used:
+.PP
+- LIB_ZFCP_HBAAPI_LOG_LEVEL - specifies log level
+.PP
+	- if not set or set to 0, logging is disabled (default)
+.PP
+	- if set to value > 0, logging is enabled
+.PP
+- LIB_ZFCP_HBAAPI_LOG_FILE - specifies file where log output is
+written to
+.PP
+	- if not set, stderr is used
+.PP
+	- if set, specified file is used for log output
+.PP
+
+.SH Reference
+
+.B FC-HBA:
+ANSI INCITS 386-2004, The T11 Technical Committee. Information
+Technology - Fibre Channel HBA API
+
+.SH SEE ALSO
+SupportedHBAAPIs(3), UnSupportedHBAAPIs(3).

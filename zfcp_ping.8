@@ -1,0 +1,51 @@
+.\"  Copyright IBM Corp. 2010
+.TH zfcp_ping 8 "Jan 2010" "zfcp_hbaapi-2"
+.SH NAME
+zfcp_ping \- send a FPNG request to a remote SAN port
+
+.SH SYNOPSIS
+.B zfcp_ping
+.RB [ \-vdh ]
+.RB [ \-c
+.IR <count> ]
+.RB [ \-t
+.IR <token> ]
+.RB [ \-a
+.IR <busid|fc_host|S_ID|WWPN> ]
+.RB <WWPN|D_ID>
+
+.SH DESCRIPTION
+.PP
+.B zfcp_ping
+is primarily used to verify the existence and availability of a node port. The node port doesn't need to be
+attached to the local environment because the request is not sent by the local adapter.
+This task is deferred to the management server of the storage area network, therefore it is possible
+to receive an answer from the designated target without being able to locally connect to the node port.
+A reason for this could be zoning (local adapter and destination are not joining a zone).
+
+.SH OPTIONS
+.TP
+.B -a <adapter>
+source adapter specified by busid, fc_host, S_ID or WWPN.
+.TP
+.B -c <number>
+number of ping requests to send.
+.TP
+.B -t <token>
+token to be send by ping request.
+.TP
+.B -v
+Generate verbose output.
+.TP
+.B -d
+provide some debug output.
+.TP
+.B -h
+Print help message and exit.
+
+
+.SH EXAMPLE
+.PP
+.IP "zfcp_ping -t97 0x50050763030b0562"
+Send a FPNG request to the port with the WWPN 0x50050763030b0562
+and use the token 97 as the initial value.

@@ -1,0 +1,30 @@
+#! /bin/sh
+
+#
+# Copyright IBM Corp. 2008, 2013
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Common Public License v1.0
+# which accompanies this distribution, and is available at
+# http://www.ibm.com/developerworks/library/os-cpl.html
+#
+# Authors:		Andreas Herrmann
+#			Sven Schuetz <sven@de.ibm.com>
+#
+# File:			bootstrap
+#
+# Description:
+# Setup of the autotools
+#
+#
+
+echo "NOTE: Recent autoconf provides 'autoreconf' to update generated config files"
+echo "      as alternative to bootstrap or autogen."
+echo bootstrapping $d...
+
+aclocal
+autoheader
+autoconf
+libtoolize --automake
+automake --add-missing
+
+echo You can now run ./configure
